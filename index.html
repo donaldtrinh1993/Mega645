@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101728">
+  <meta name="description" content="Bộ lọc Mega 6/45 với số cốt lõi, 4 điều kiện gốc, lịch sử và sử dụng trên iPhone.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mega 6/45">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <title>Mega 6/45 — Bộ lọc số cho iPhone</title>
+  <style>
+    :root { color-scheme:dark; --bg:#0a1020; --surface:#171f33; --surface2:#202b42; --border:#39445d;
+      --text:#f4f6fc; --muted:#b9c4d9; --accent:#ff7b83; --accent2:#ffd19b; --ring:#ffb7bb;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    * { box-sizing:border-box; }
+    html { background:var(--bg); scroll-behavior:smooth; }
+    body { background:radial-gradient(circle at 15% -150px,#53304c 0,transparent 440px),var(--bg); color:var(--text); margin:0; min-width:280px; }
+    button,select,input,textarea { font:inherit; }
+    button { cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+    button:disabled { opacity:.5; cursor:progress; }
+    button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,input:focus-visible+span { outline:3px solid var(--ring); outline-offset:3px; }
+    [hidden] { display:none!important; }
+    .wrap { max-width:870px; margin:0 auto; padding:18px 16px calc(38px + env(safe-area-inset-bottom,0px)); }
+    header { display:flex; align-items:center; gap:13px; margin-bottom:20px; }
+    .logo { display:grid; place-items:center; flex:0 0 56px; height:56px; background:linear-gradient(145deg,#ff9a90,#e34c72); color:#2c0d21; border-radius:17px; font-size:19px; font-weight:900; box-shadow:0 10px 28px #ca365833; }
+    .brand { min-width:0; flex:1; }
+    .brand h1 { margin:0; font-size:clamp(22px,5.4vw,30px); line-height:1.12; letter-spacing:-.5px; }
+    .brand p { color:var(--muted); margin:5px 0 0; font-size:13px; }
+    .chip { color:#ffc9c1; border:1px solid #935269; background:#3b2339; padding:7px 9px; font-size:11px; font-weight:750; border-radius:999px; flex:none; }
+    .intro { margin:0 0 20px; }
+    .intro h2 { margin:0 0 8px; font-size:clamp(26px,6vw,37px); line-height:1.15; letter-spacing:-1px; }
+    .intro p { margin:0; line-height:1.6; color:var(--muted); font-size:14px; }
+    .panel { background:var(--surface); border:1px solid var(--border); border-radius:19px; padding:18px; box-shadow:0 10px 25px #0003; }
+    .setup { display:grid; gap:16px; margin-bottom:22px; }
+    .heading { margin:0 0 10px; color:#edf1fb; font-weight:780; font-size:14px; }
+    .mode-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+    .mode-option { display:block; position:relative; cursor:pointer; }
+    .mode-option input { position:absolute; width:1px; height:1px; opacity:0; }
+    .mode-option span { display:flex; flex-direction:column; justify-content:center; min-height:85px; gap:5px; padding:12px 10px; background:#212c45; border:1px solid #46516a; border-radius:12px; }
+    .mode-option strong { font-size:14px; }
+    .mode-option small { font-size:12px; color:var(--muted); line-height:1.35; }
+    .mode-option input:checked+span { background:#4a283e; border-color:#ff9298; box-shadow:inset 0 0 0 1px #ff9298; }
+    .field { display:grid; gap:7px; }
+    .field label { font-weight:750; font-size:13px; }
+    .field small { color:var(--muted); line-height:1.45; font-size:12px; }
+    input[type=text],select { width:100%; min-height:48px; border:1px solid #57627b; border-radius:11px; background:#1e2b42; color:var(--text); padding:11px 13px; font-size:16px; }
+    input::placeholder { color:#a7b3c7; opacity:1; }
+    .setup-footer { display:flex; align-items:end; gap:12px; }
+    .setup-footer .field { flex:1; min-width:120px; }
+    .primary { min-height:49px; border:0; border-radius:12px; color:#361021; font-weight:850; background:linear-gradient(115deg,#ffc195,#ff7e8d); padding:11px 17px; box-shadow:0 6px 18px #bd425830; }
+    .primary:active { transform:translateY(1px); }
+    .hint { margin:0; color:var(--muted); font-size:12px; line-height:1.55; }
+    .criteria { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .criterion { display:flex; align-items:center; padding:9px 11px; font-size:12px; line-height:1.35; border:1px solid #48536b; border-radius:10px; color:#e8eefa; background:#202b42; }
+    .criterion b { color:#ffc5a7; margin-right:5px; }
+    .message { padding:12px 13px; border:1px solid #b66875; color:#ffe5e4; background:#4c2834; border-radius:11px; font-size:13px; line-height:1.55; }
+    .compat { padding:12px; margin-bottom:16px; border-radius:11px; background:#44321e; border:1px solid #ab8b55; font-size:12px; line-height:1.5; }
+    .results-head { display:flex; align-items:end; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+    .results-head h2 { margin:0 0 5px; font-size:21px; }
+    .results-head p { font-size:12px; line-height:1.45; color:var(--muted); margin:0; }
+    .legend { display:flex; flex-wrap:wrap; align-items:center; gap:10px; color:var(--muted); font-size:11px; }
+    .dot { display:inline-block; margin-right:5px; height:10px; width:10px; border-radius:50%; }
+    .dot.low { background:#9f6fe5; } .dot.high { background:#e75d72; }
+    .ticket-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .ticket { background:linear-gradient(135deg,#222a42,#18253b); border:1px solid #3e4b64; border-radius:15px; padding:12px 11px; min-width:0; }
+    .ticket-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:11px; }
+    .ticket-head strong { font-size:13px; color:#dbe5f5; }
+    .ticket-head span { font-size:11px; color:var(--muted); }
+    .balls { display:flex; flex-wrap:nowrap; justify-content:center; align-items:center; gap:clamp(4px,1.4vw,8px); }
+    .ball { display:grid; place-items:center; flex:0 1 clamp(34px,8vw,45px); width:clamp(34px,8vw,45px); aspect-ratio:1; border-radius:50%; font-size:clamp(14px,3.5vw,18px); font-weight:850; font-variant-numeric:tabular-nums; color:white; white-space:nowrap; }
+    .ball.low { background:linear-gradient(145deg,#a77eeb,#7751b9); } .ball.high { background:linear-gradient(145deg,#fc858a,#cf4b6a); }
+    .ball.core { outline:2px solid #ffe09a; outline-offset:2px; }
+    .ticket-stat { border-top:1px solid #414e69; margin:12px 0 0; padding-top:9px; color:#ced8e7; font-size:11px; line-height:1.6; overflow-wrap:anywhere; }
+    .actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-top:14px; }
+    .secondary { border:1px solid #56647e; border-radius:11px; min-height:46px; background:#253450; color:#f4f6fc; font-weight:750; font-size:13px; padding:9px 8px; }
+    .secondary:active { background:#304262; }
+    .secondary.accent { border-color:#c77c85; color:#ffd5d7; }
+    .output { margin-top:16px; }
+    .output summary { cursor:pointer; color:#ffd6c7; font-weight:750; font-size:13px; padding:7px 0; }
+    textarea { width:100%; padding:12px; min-height:175px; resize:vertical; border-radius:11px; border:1px solid #485570; background:#111b2e; color:white; font-size:14px; line-height:1.65; }
+    .history { margin-top:20px; }
+    .history-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+    .history h2 { margin:0 0 5px; font-size:19px; } .history p { margin:0; font-size:12px; color:var(--muted); line-height:1.55; }
+    .history-list { display:grid; gap:8px; }
+    .history-item { display:flex; align-items:center; justify-content:space-between; gap:8px; border:1px solid #44516a; background:#202d46; border-radius:12px; padding:11px; }
+    .history-item .meta { min-width:0; } .history-item strong { font-size:13px; display:block; } .history-item small { display:block; color:var(--muted); font-size:12px; margin-top:3px; line-height:1.4; }
+    .history-buttons { display:flex; gap:6px; flex:none; }
+    .tiny { min-height:42px; min-width:42px; border:1px solid #66728a; background:#2b3c58; color:#fff; font-size:13px; border-radius:10px; padding:8px 10px; }
+    .danger { color:#ffbfc7; border-color:#9b5264; }
+    .empty { color:var(--muted); font-size:13px; padding:16px; border:1px dashed #4c5a73; border-radius:12px; text-align:center; }
+    .backup-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; } .backup-actions .secondary { min-width:130px; padding:9px 12px; }
+    .muted-note { margin:11px 0 0!important; color:var(--muted); line-height:1.6; font-size:12px; }
+    .warning { border:1px solid #ad865c; background:#493820; border-radius:11px; padding:11px; margin-top:11px; font-size:12px; line-height:1.55; }
+    footer { font-size:12px; line-height:1.65; color:var(--muted); padding:22px 0 0; }
+    footer strong { color:#f6e5e3; }
+    .offline { border:1px solid #5e665e; background:#203542; padding:10px 12px; border-radius:11px; color:#c9e7e4; }
+    #toast { position:fixed; z-index:99; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translate(-50%,25px); width:max-content; max-width:calc(100% - 28px); background:#fff0e8; color:#402139; padding:12px 16px; border-radius:12px; opacity:0; pointer-events:none; box-shadow:0 14px 35px #0008; transition:opacity .2s,transform .2s; font-size:13px; font-weight:800; text-align:center; }
+    #toast.show { opacity:1; transform:translate(-50%,0); }
+    @media(max-width:650px) { .wrap { padding:16px 12px calc(28px + env(safe-area-inset-bottom,0px)); } .panel {padding:14px;} .ticket-grid {grid-template-columns:1fr;} .actions {grid-template-columns:repeat(2,minmax(0,1fr));} .chip {font-size:10px;} }
+    @media(max-width:350px) { .logo {flex-basis:48px;height:48px;font-size:17px;} .brand p {font-size:11px;} .setup-footer {flex-direction:column;align-items:stretch;} .mode-option span {min-height:100px;padding:9px 8px;} .ticket {padding:12px 8px;} .balls {gap:4px;} .ball {flex-basis:34px;width:34px;font-size:14px;} .criterion {font-size:11px;} }
+    @media(prefers-reduced-motion:reduce) {*,*::before,*::after {scroll-behavior:auto!important;transition:none!important;} }
+    @media print {body {color:#000;background:#fff;} .setup,.actions,.history,.output,footer,.chip,.compat {display:none;} .ticket-grid {grid-template-columns:repeat(2,minmax(0,1fr));} .ticket {break-inside:avoid;border-color:#777;background:#fff;color:#111;} .ticket-head strong,.ticket-head span,.ticket-stat {color:#111;} .ball {-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">6/45</div>
+      <div class="brand"><h1>MEGA 6/45</h1><p>Bộ lọc số • thiết kế cho iPhone</p></div>
+      <span class="chip">KHÔNG ĐĂNG NHẬP</span>
+    </header>
+    <section class="intro"><h2>Lọc bộ số, lưu trong một chạm.</h2><p>Giữ đúng bộ lọc gốc hoặc tạo bộ số ngẫu nhiên. Chọn tối đa bốn số cốt lõi và sử dụng lại lịch sử ngay trên thiết bị.</p></section>
+    <div class="compat" id="compatNote" role="alert">Nếu nút bấm không hoạt động trên iPhone, bạn có thể đang xem file trong ứng dụng Tệp (Quick Look), nơi JavaScript bị hạn chế. Hãy mở qua Safari tại website GitHub Pages.</div>
+    <section class="panel setup" aria-labelledby="setupTitle">
+      <div>
+        <h2 id="setupTitle" class="heading">Cách tạo số</h2>
+        <div class="mode-options" role="radiogroup" aria-label="Chế độ tạo số">
+          <label class="mode-option"><input type="radio" name="mode" value="filtered" checked><span><strong>🎯 Lọc theo 4 điều kiện</strong><small>Giữ nguyên thuật toán Mega645 gốc, tìm đúng mọi tổ hợp hợp lệ.</small></span></label>
+          <label class="mode-option"><input type="radio" name="mode" value="uniform"><span><strong>🎲 Ngẫu nhiên 6/45</strong><small>Không áp dụng bốn điều kiện, vẫn giữ số cốt lõi nếu nhập.</small></span></label>
+        </div>
+      </div>
+      <div id="criteriaPanel" aria-label="Bốn điều kiện của bộ lọc">
+        <h2 class="heading">Bốn điều kiện của file gốc</h2>
+        <div class="criteria"><span class="criterion"><b>①</b> Tổng từ 135–141</span><span class="criterion"><b>②</b> 3 chẵn / 3 lẻ</span><span class="criterion"><b>③</b> 3 số 01–22 / 3 số 23–45</span><span class="criterion"><b>④</b> ≥ 1 cặp liên tiếp</span></div>
+      </div>
+      <div class="field">
+        <label for="coreNumbers">Số cốt lõi — tối đa 4 số (tùy chọn)</label>
+        <input id="coreNumbers" type="text" inputmode="text" placeholder="Ví dụ: 06, 09, 33" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <small>Nhập các số từ 01–45, phân tách bằng dấu phẩy, khoảng trắng hoặc dấu chấm phẩy. Để trống nếu không chọn số cốt lõi.</small>
+      </div>
+      <div class="setup-footer">
+        <div class="field"><label for="ticketCount">Số bộ cần tạo</label><select id="ticketCount"><option value="1">1 bộ</option><option value="5">5 bộ</option><option value="10" selected>10 bộ</option><option value="20">20 bộ</option><option value="50">50 bộ</option></select></div>
+        <button id="generateBtn" type="button" class="primary">🎯 Tạo bộ số mới</button>
+      </div>
+      <p class="hint">Mỗi bộ có 6 số khác nhau, xếp tăng dần và không lặp nguyên bộ trong cùng một lần tạo. Trong chế độ lọc, nếu số cốt lõi quá chặt, công cụ báo đúng số bộ có thể tạo.</p>
+      <div id="errorBox" class="message" role="alert" hidden></div>
+    </section>
+    <section aria-labelledby="resultsTitle">
+      <div class="results-head"><div><h2 id="resultsTitle">Các bộ số</h2><p id="resultsMeta">Đang chuẩn bị...</p><p id="poolMeta"></p></div><div class="legend"><span><i class="dot low" aria-hidden="true"></i>01–22</span><span><i class="dot high" aria-hidden="true"></i>23–45</span><span>Viền vàng: số cốt lõi</span></div></div>
+      <div id="ticketGrid" class="ticket-grid" aria-live="polite"></div>
+      <div class="actions" aria-label="Thao tác bộ số"><button type="button" class="secondary accent" id="copyBtn">📋 Sao chép</button><button type="button" class="secondary" id="shareBtn">↗ Chia sẻ</button><button type="button" class="secondary" id="saveBtn">♡ Lưu lịch sử</button><button type="button" class="secondary" id="txtBtn">↓ Xuất TXT</button></div>
+      <details class="output"><summary>Xem bộ số dạng văn bản</summary><textarea id="textResult" readonly spellcheck="false" aria-label="Danh sách bộ số"></textarea></details>
+    </section>
+    <section class="panel history" aria-labelledby="historyTitle"><div class="history-head"><div><h2 id="historyTitle">Lịch sử đã lưu</h2><p>Tối đa 30 lần trên thiết bị này.</p></div><span id="historyCount" class="chip">0 lần</span></div><div id="historyList" class="history-list"></div>
+      <div class="backup-actions"><button type="button" id="backupBtn" class="secondary">↓ Sao lưu JSON</button><button type="button" id="importBtn" class="secondary">↑ Khôi phục JSON</button><button type="button" id="clearBtn" class="secondary danger">Xóa lịch sử</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+      <p class="muted-note">Bộ số hiện tại và lịch sử được giữ trong bộ nhớ cục bộ khi trình duyệt cho phép. Nên sao lưu JSON trước khi đổi máy hoặc xóa dữ liệu Safari.</p>
+      <div class="warning" id="storageWarning" hidden>Trình duyệt này không cho phép lưu bộ số lâu dài. Bạn vẫn có thể sao chép hoặc xuất JSON.</div>
+    </section>
+    <footer><p id="offlineStatus" class="offline" role="status">Đang kiểm tra trạng thái offline...</p><p><strong>Về xác suất:</strong> Mega 6/45 có 8.145.060 tổ hợp sáu số. Bộ lọc gốc giữ đúng 83.863 tổ hợp (khoảng 1,03%). Những điều kiện về tổng, chẵn/lẻ, thấp/cao hay cặp liên tiếp không làm tăng xác suất trúng Jackpot của một bộ số trong kỳ quay công bằng. Ứng dụng không truy vấn kết quả xổ số hoặc gửi bộ số tới máy chủ.</p></footer>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script>
+  (function () {
+    'use strict';
+    const STORAGE_KEY='mega645_ios_v1';
+    const BACKUP_SCHEMA='mega645-backup-v1';
+    const MAX_HISTORY=30;
+    const COUNTS=[1,5,10,20,50];
+    const $=id=>document.getElementById(id);
+    const state={mode:'filtered',requested:10,core:[],tickets:[],createdAt:null,possible:null,history:[],selectionMode:'filtered',selectionRequested:10};
+    let storageReady=false, toastTimer=null, busy=false;
+    let cachedPoolKey=null, cachedPool=null;
+
+    function two(n){return String(n).padStart(2,'0');}
+    function dateLabel(iso){try {return new Intl.DateTimeFormat('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(iso));}catch(_){return String(iso||'');}}
+    function modeLabel(mode){return mode==='filtered'?'Bộ lọc 4 điều kiện':'Ngẫu nhiên 6/45';}
+    function showToast(message){const e=$('toast');e.textContent=message;e.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),3000);}
+    function error(message){$('errorBox').textContent=message;$('errorBox').hidden=false;showToast(message);}
+    function clearError(){$('errorBox').hidden=true;$('errorBox').textContent='';}
+    function isMode(mode){return mode==='filtered'||mode==='uniform';}
+    function safeMode(mode){return isMode(mode)?mode:'filtered';}
+    function safeCount(n){return COUNTS.includes(Number(n))?Number(n):10;}
+    function parseCore(value){
+      if(!String(value||'').trim())return [];
+      const parts=String(value).trim().split(/[,;，\s]+/).filter(Boolean),seen=new Set(),result=[];
+      for(const part of parts){
+        if(!/^\d{1,2}$/.test(part))throw new Error('Chỉ nhập số nguyên từ 01 đến 45, phân cách bằng dấu phẩy hoặc khoảng trắng.');
+        const n=Number(part);
+        if(n<1||n>45)throw new Error('Số cốt lõi phải nằm trong khoảng 01–45.');
+        if(!seen.has(n)){result.push(n);seen.add(n);}
+      }
+      if(result.length>4)throw new Error('Chỉ được nhập tối đa 4 số cốt lõi khác nhau.');
+      return result.sort((a,b)=>a-b);
+    }
+    function isCore(c){return Array.isArray(c)&&c.length<=4&&c.every(n=>Number.isInteger(n)&&n>=1&&n<=45)&&new Set(c).size===c.length;}
+    function stats(arr){let even=0,low=0,sum=0;const consecutive=[];for(let i=0;i<arr.length;i++){const n=arr[i];sum+=n;if(n%2===0)even++;if(n<=22)low++;if(i&&n===arr[i-1]+1)consecutive.push(two(arr[i-1])+'–'+two(n));}return {sum,even,low,consecutive};}
+    function qualifies(arr){const s=stats(arr);return s.sum>=135&&s.sum<=141&&s.even===3&&s.low===3&&s.consecutive.length>0;}
+    function isTicket(t,mode,core){return Array.isArray(t)&&t.length===6&&t.every(n=>Number.isInteger(n)&&n>=1&&n<=45)&&new Set(t).size===6&&t.every((n,i)=>i===0||n>t[i-1])&&core.every(n=>t.includes(n))&&(mode!=='filtered'||qualifies(t));}
+    function isSession(session){if(!session||typeof session!=='object'||!isMode(session.mode)||!isCore(session.core)||!COUNTS.includes(Number(session.requested)))return false;
+      if(!Array.isArray(session.tickets)||session.tickets.length<1||session.tickets.length>session.requested||!session.tickets.every(t=>isTicket(t,session.mode,session.core)))return false;
+      return new Set(session.tickets.map(t=>t.join(','))).size===session.tickets.length;
+    }
+    function normalizeHistory(input){if(!Array.isArray(input))return[];const seen=new Set();return input.filter(s=>{if(!isSession(s))return false;const key=[s.mode,s.core.join(','),s.tickets.map(t=>t.join(',')).join('|')].join('~');if(seen.has(key))return false;seen.add(key);return true;}).slice(0,MAX_HISTORY).map(s=>({id:String(s.id||('m'+Date.now()+Math.random())),mode:s.mode,requested:Number(s.requested),core:s.core.slice(),tickets:s.tickets.map(t=>t.slice()),createdAt:s.createdAt||new Date().toISOString(),possible:Number.isInteger(s.possible)?s.possible:null}));}
+    function canStore(){try{const k=STORAGE_KEY+'_probe';localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(_){return false;}}
+    function persist(){if(!storageReady)return;try{localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,mode:state.mode,requested:state.requested,core:state.core,tickets:state.tickets,createdAt:state.createdAt,possible:state.possible,history:state.history,selectionMode:state.selectionMode,selectionRequested:state.selectionRequested,coreInput:$('coreNumbers').value}));}catch(_){storageReady=false;$('storageWarning').hidden=false;}}
+    function randomBelow(max){if(!Number.isSafeInteger(max)||max<1)throw new Error('randomBelow: giới hạn không hợp lệ');if(window.crypto&&typeof window.crypto.getRandomValues==='function'){
+      const sample=new Uint32Array(1),limit=Math.floor(4294967296/max)*max;do{window.crypto.getRandomValues(sample);}while(sample[0]>=limit);return sample[0]%max;
+      }return Math.floor(Math.random()*max);
+    }
+    function chooseDistinct(list,count){const p=list.slice();for(let i=0;i<count;i++){const j=i+randomBelow(p.length-i);[p[i],p[j]]=[p[j],p[i]];}return p.slice(0,count);}
+    function triples(min,max,must){const result=[];for(let a=min;a<=max-2;a++)for(let b=a+1;b<=max-1;b++)for(let c=b+1;c<=max;c++){
+      if(must.some(v=>v!==a&&v!==b&&v!==c))continue;
+      result.push({nums:[a,b,c],sum:a+b+c,even:((a%2===0)?1:0)+((b%2===0)?1:0)+((c%2===0)?1:0),adj:b===a+1||c===b+1});
+    }return result;}
+    // Exhaustively enumerate valid tickets. At most 1540 low triples × 1771 high triples,
+    // accelerated with a sum/parity index; no random-attempt limit and no false "no results".
+    function validFilteredPool(core){
+      const key=core.join(',');if(key===cachedPoolKey&&cachedPool)return cachedPool;
+      const lc=core.filter(n=>n<=22),hc=core.filter(n=>n>=23);
+      if(lc.length>3||hc.length>3){cachedPoolKey=key;cachedPool=[];return cachedPool;}
+      const lows=triples(1,22,lc),highs=triples(23,45,hc),bySumEven=new Map();
+      for(const h of highs){const k=h.sum+'|'+h.even;if(!bySumEven.has(k))bySumEven.set(k,[]);bySumEven.get(k).push(h);}
+      const valid=[];
+      for(const l of lows){for(let total=135;total<=141;total++){
+        const matches=bySumEven.get((total-l.sum)+'|'+(3-l.even));if(!matches)continue;
+        for(const h of matches){if(l.adj||h.adj||(l.nums[2]===22&&h.nums[0]===23))valid.push(l.nums.concat(h.nums));}
+      }}
+      cachedPoolKey=key;cachedPool=valid;return valid;
+    }
+    function generateUniform(core,want){const all=Array.from({length:45},(_,i)=>i+1).filter(n=>!core.includes(n));const seen=new Set(),out=[];let tries=0;
+      while(out.length<want&&tries++<3000){const arr=core.concat(chooseDistinct(all,6-core.length)).sort((a,b)=>a-b);const key=arr.join(',');if(!seen.has(key)){seen.add(key);out.push(arr);}}
+      return out;
+    }
+    function currentSession(){return{id:'m'+Date.now()+'_'+randomBelow(10000000),mode:state.mode,requested:state.requested,core:state.core.slice(),tickets:state.tickets.map(t=>t.slice()),createdAt:state.createdAt,possible:state.possible};}
+    function sessionText(s){const pre='Mega 6/45 — '+modeLabel(s.mode)+(s.core.length?' — Cốt lõi: '+s.core.map(two).join(', '):'');return pre+'\n'+s.tickets.map((t,i)=>'Bộ '+two(i+1)+':  '+t.map(two).join(' - ')).join('\n');}
+    function makeBall(n,core){const ball=document.createElement('span');ball.className='ball '+(n<=22?'low':'high')+(core.includes(n)?' core':'');ball.textContent=two(n);if(core.includes(n))ball.title='Số cốt lõi';return ball;}
+    function renderTickets(){const grid=$('ticketGrid'),frag=document.createDocumentFragment();for(let i=0;i<state.tickets.length;i++){
+      const nums=state.tickets[i],art=document.createElement('article');art.className='ticket';art.setAttribute('aria-label','Bộ '+(i+1)+': '+nums.map(two).join(', '));
+      const head=document.createElement('div');head.className='ticket-head';const title=document.createElement('strong');title.textContent='BỘ '+two(i+1);const label=document.createElement('span');label.textContent='MEGA 6/45';head.append(title,label);art.append(head);
+      const balls=document.createElement('div');balls.className='balls';nums.forEach(n=>balls.appendChild(makeBall(n,state.core)));art.appendChild(balls);
+      const st=stats(nums),foot=document.createElement('p');foot.className='ticket-stat';foot.textContent='Tổng '+st.sum+' · '+st.even+' chẵn / '+(6-st.even)+' lẻ · '+st.low+' thấp / '+(6-st.low)+' cao · Liên tiếp: '+(st.consecutive.join(', ')||'không');art.appendChild(foot);frag.appendChild(art);
+    }grid.replaceChildren(frag);}
+    function renderHistory(){const list=$('historyList');list.replaceChildren();$('historyCount').textContent=state.history.length+' lần';
+      if(!state.history.length){const el=document.createElement('div');el.className='empty';el.textContent='Chưa có lịch sử. Nhấn “Lưu lịch sử” để lưu một lần tạo.';list.appendChild(el);return;}
+      for(const item of state.history){const row=document.createElement('div');row.className='history-item';const meta=document.createElement('div');meta.className='meta';const title=document.createElement('strong');title.textContent=dateLabel(item.createdAt);const small=document.createElement('small');small.textContent=item.tickets.length+' bộ • '+modeLabel(item.mode)+(item.core.length?' • Cốt lõi '+item.core.map(two).join(', '):'');meta.append(title,small);
+        const actions=document.createElement('div');actions.className='history-buttons';const open=document.createElement('button');open.className='tiny';open.type='button';open.textContent='Mở';open.addEventListener('click',()=>loadSession(item));const del=document.createElement('button');del.className='tiny danger';del.type='button';del.textContent='Xóa';del.addEventListener('click',()=>{state.history=state.history.filter(x=>x.id!==item.id);persist();renderHistory();showToast('Đã xóa lần lưu');});actions.append(open,del);row.append(meta,actions);list.append(row);
+      }
+    }
+    function render(){document.querySelectorAll('input[name="mode"]').forEach(el=>el.checked=el.value===state.selectionMode);$('ticketCount').value=String(state.selectionRequested);$('criteriaPanel').hidden=state.selectionMode!=='filtered';
+      $('resultsMeta').textContent=state.tickets.length+' bộ • '+modeLabel(state.mode)+(state.createdAt?' • '+dateLabel(state.createdAt):'');
+      $('poolMeta').textContent=state.mode==='filtered'&&Number.isInteger(state.possible)?'Có chính xác '+state.possible.toLocaleString('vi-VN')+' tổ hợp hợp lệ'+(state.core.length?' chứa '+state.core.map(two).join(', '):'')+'.':'';
+      $('textResult').value=state.tickets.length?sessionText(state):'';renderTickets();renderHistory();}
+    async function generateBatch(auto){if(busy)return;clearError();let core;
+      try{core=parseCore($('coreNumbers').value);}catch(e){error(e.message);return;}
+      state.selectionMode=safeMode(document.querySelector('input[name="mode"]:checked').value);state.selectionRequested=safeCount($('ticketCount').value);
+      busy=true;$('generateBtn').disabled=true;$('generateBtn').textContent='Đang tạo...';await new Promise(resolve=>setTimeout(resolve,15));
+      try{
+        let tickets=[],possible=null;
+        if(state.selectionMode==='filtered'){
+          const pool=validFilteredPool(core);possible=pool.length;
+          if(!pool.length){error('Không tồn tại bộ số nào đáp ứng đủ 4 điều kiện với các số cốt lõi này. Vui lòng đổi hoặc bớt số cốt lõi.');return;}
+          const eligibleIndices=Array.from({length:possible},(_,i)=>i);
+          const chosen=chooseDistinct(eligibleIndices,Math.min(state.selectionRequested,possible));tickets=chosen.map(i=>pool[i].slice());
+        }else{tickets=generateUniform(core,state.selectionRequested);}
+        if(!tickets.length){error('Không thể tạo bộ số, vui lòng thử lại.');return;}
+        state.mode=state.selectionMode;state.requested=state.selectionRequested;state.core=core.slice();state.tickets=tickets;state.possible=possible;state.createdAt=new Date().toISOString();
+        render();persist();if(!auto){if(tickets.length<state.requested)showToast('Chỉ có '+tickets.length+' bộ hợp lệ cho lựa chọn này');else showToast('Đã tạo '+tickets.length+' bộ không trùng');}
+      }catch(e){error('Có lỗi khi tạo bộ số. Vui lòng thử lại.');console.error(e);}finally{busy=false;$('generateBtn').disabled=false;$('generateBtn').textContent='🎯 Tạo bộ số mới';}
+    }
+    function loadSession(s){if(!isSession(s)){showToast('Dữ liệu lịch sử không hợp lệ');return;}state.mode=s.mode;state.requested=s.requested;state.core=s.core.slice();state.tickets=s.tickets.map(t=>t.slice());state.possible=Number.isInteger(s.possible)?s.possible:null;state.createdAt=s.createdAt;state.selectionMode=s.mode;state.selectionRequested=s.requested;$('coreNumbers').value=s.core.map(two).join(', ');clearError();render();persist();$('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});showToast('Đã mở '+s.tickets.length+' bộ số');}
+    function saveCurrent(){if(!state.tickets.length){showToast('Chưa có bộ số để lưu');return;}const cur=currentSession(),fingerprint=sessionText(cur);
+      if(state.history.some(h=>sessionText(h)===fingerprint)){showToast('Lần tạo này đã được lưu');return;}state.history.unshift(cur);state.history=state.history.slice(0,MAX_HISTORY);persist();renderHistory();showToast('Đã lưu lịch sử trên thiết bị');}
+    async function copyText(){if(!state.tickets.length)return;const text=sessionText(state);
+      try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);showToast('Đã sao chép '+state.tickets.length+' bộ');return;}}catch(_){/* use selection fallback */}
+      const box=$('textResult');box.closest('details').open=true;box.focus();box.select();box.setSelectionRange(0,box.value.length);try{if(document.execCommand('copy')){showToast('Đã sao chép '+state.tickets.length+' bộ');return;}}catch(_){}
+      showToast('Vui lòng giữ và chọn Sao chép trong khung văn bản');
+    }
+    async function share(){if(!state.tickets.length)return;const text=sessionText(state);if(navigator.share){try{await navigator.share({title:'Mega 6/45',text});return;}catch(e){if(e&&e.name==='AbortError')return;}}await copyText();}
+    function saveFile(filename,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;link.style.display='none';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),20000);}
+    function slug(){const d=new Date(),local=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString();return local.slice(0,16).replace('T','_').replace(':','-');}
+    function exportText(){if(!state.tickets.length){showToast('Chưa có bộ số');return;}saveFile('Mega645_'+slug()+'.txt','\ufeff'+sessionText(state),'text/plain;charset=utf-8');showToast('Đã yêu cầu xuất TXT');}
+    function exportBackup(){const data={schema:BACKUP_SCHEMA,savedAt:new Date().toISOString(),current:state.tickets.length?currentSession():null,history:state.history};saveFile('Mega645_SaoLuu_'+slug()+'.json',JSON.stringify(data,null,2),'application/json;charset=utf-8');showToast('Đã yêu cầu xuất JSON');}
+    async function importBackup(file){if(!file)return;if(file.size>2*1024*1024){showToast('File JSON vượt quá 2 MB');return;}try{const data=JSON.parse(await file.text());if(!data||data.schema!==BACKUP_SCHEMA)throw new Error('schema');const prior=state.history;const incoming=normalizeHistory(data.history);state.history=normalizeHistory(incoming.concat(prior));if(isSession(data.current)){state.mode=data.current.mode;state.requested=data.current.requested;state.core=data.current.core.slice();state.tickets=data.current.tickets.map(t=>t.slice());state.createdAt=data.current.createdAt;state.possible=Number.isInteger(data.current.possible)?data.current.possible:null;state.selectionMode=state.mode;state.selectionRequested=state.requested;$('coreNumbers').value=state.core.map(two).join(', ');}render();persist();showToast('Đã khôi phục '+incoming.length+' lần lưu');}catch(_){showToast('File JSON sao lưu không hợp lệ');}}
+    function init(){
+      $('compatNote').hidden=true;storageReady=canStore();$('storageWarning').hidden=storageReady;
+      if(storageReady){try{const st=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(st&&typeof st==='object'){
+        state.history=normalizeHistory(st.history);state.selectionMode=safeMode(st.selectionMode||st.mode);state.selectionRequested=safeCount(st.selectionRequested||st.requested);
+        if(isSession(st)){state.mode=st.mode;state.requested=Number(st.requested);state.core=st.core.slice();state.tickets=st.tickets.map(t=>t.slice());state.createdAt=st.createdAt;state.possible=Number.isInteger(st.possible)?st.possible:null;}
+        if(typeof st.coreInput==='string'&&st.coreInput.length<=120)$('coreNumbers').value=st.coreInput;
+        else if(state.core.length)$('coreNumbers').value=state.core.map(two).join(', ');
+      }}catch(_){} }
+      document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener('change',()=>{state.selectionMode=safeMode(el.value);$('criteriaPanel').hidden=state.selectionMode!=='filtered';persist();}));
+      $('ticketCount').addEventListener('change',()=>{state.selectionRequested=safeCount($('ticketCount').value);persist();});
+      $('coreNumbers').addEventListener('change',persist);
+      $('generateBtn').addEventListener('click',()=>generateBatch(false));$('copyBtn').addEventListener('click',copyText);$('shareBtn').addEventListener('click',share);$('saveBtn').addEventListener('click',saveCurrent);$('txtBtn').addEventListener('click',exportText);$('backupBtn').addEventListener('click',exportBackup);
+      $('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{await importBackup(e.target.files[0]);e.target.value='';});
+      $('clearBtn').addEventListener('click',()=>{if(!state.history.length){showToast('Lịch sử đang trống');return;}if(confirm('Xóa toàn bộ lịch sử Mega 6/45 trên thiết bị này?')){state.history=[];persist();renderHistory();showToast('Đã xóa lịch sử');}});
+      render();if(!state.tickets.length)setTimeout(()=>generateBatch(true),0);
+      if(document.querySelector('link[rel="manifest"]')&&'serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
+        $('offlineStatus').textContent='Đang cài bộ nhớ đệm offline...';window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{$('offlineStatus').textContent='✓ Đã cài bộ nhớ đệm: có thể mở offline sau lần truy cập online (nếu iOS chưa xóa dữ liệu website).';}).catch(()=>{$('offlineStatus').textContent='Không thể kích hoạt offline. Kiểm tra đủ các tệp PWA và HTTPS.';}));
+      }else {$('offlineStatus').textContent='Bản HTML độc lập: hoạt động không cần mạng nếu được mở bằng trình duyệt có hỗ trợ JavaScript. Để cài vào màn hình chính, dùng bản PWA qua HTTPS.';}
+    }
+    init();
+  })();
+  </script>
+</body>
+</html>
